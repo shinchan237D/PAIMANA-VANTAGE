@@ -103,61 +103,47 @@ function App(){
   const loadInFlight=useRef(false)
 
   const loadAll=useCallback(async()=>{
-  if(loadInFlight.current)return
-  loadInFlight.current=true
-  setError(null)
+    if(loadInFlight.current)return
+    loadInFlight.current=true
+    setError(null)
+    try{
+      const [p,pr,m,i,s,c,t]=await Promise.all([
+        client.portfolio(), client.projects({page:1,page_size:2000,sort:'risk'}), client.map(), client.integrity(), client.source(), client.changes(false), client.trends()
+      ])
+      setPortfolio(p); setQueue(pr.items); setProjects(pr.items); setMapStates(m.state_aggregates); setMapProjects(m.projects||[]); setMapAudit(m.engine_audit||null); setMapNote(m.marker_note||''); setIntegrity(i); setSource(s); setChanges(c); setTrends(t); setLoading(false); setSystemStatus('online'); setLastLoadedAt(Date.now())
+    }catch(e){ setLoading(false); setSystemStatus('offline'); setError(e instanceof Error?e.message:'Unable to connect to the Sentinel backend.') }
+    finally{ loadInFlight.current=false }
+  },[])
 
-  try{
-    // Load essential dashboard data first.
-    const [p,m,i,s,c,t]=await Promise.all([
-      client.portfolio(),
-      client.map(),
-      client.integrity(),
-      client.source(),
-      client.changes(false),
-      client.trends()
-    ])
+  useEffect(()=>{loadAll(); const timer=setInterval(loadAll,300000); return()=>clearInterval(timer)},[loadAll])
 
-    setPortfolio(p)
-    setMapStates(m.state_aggregates)
-    setMapProjects(m.projects||[])
-    setMapAudit(m.engine_audit||null)
-    setMapNote(m.marker_note||'')
-    setIntegrity(i)
-    setSource(s)
-    setChanges(c)
-    setTrends(t)
+  useEffect(()=>{
+    let cancelled=false
+    const check=async()=>{
+      try{await client.health();if(!cancelled)setSystemStatus('online')}
+      catch{if(!cancelled)setSystemStatus('offline')}
+    }
+    check();
+    const timer=setInterval(check,60000)
+    return()=>{cancelled=true;clearInterval(timer)}
+  },[])
 
-    // IMPORTANT: show the dashboard now.
-    setLoading(false)
-    setSystemStatus('online')
-    setLastLoadedAt(Date.now())
+  useEffect(()=>{
+    const onKey=(e:KeyboardEvent)=>{
+      if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();setSearchOpen(true)}
+      const tag=(e.target as HTMLElement)?.tagName||''
+      if(!['INPUT','TEXTAREA','SELECT'].includes(tag)){
+        const k=e.key.toLowerCase()
+        if(k==='d'){e.preventDefault();setDemoOpen(true)}
+        if(k==='m'){e.preventDefault();nav('map')}
+        if(k==='w'){e.preventDefault();nav('watchlist')}
+        if(k==='b'){e.preventDefault();nav('brief')}
+      }
+      if(e.key==='Escape'){setSearchOpen(false);setWhyOpen(false);setAnalystOpen(false);setDemoOpen(false)}
+    }
+    window.addEventListener('keydown',onKey); return()=>window.removeEventListener('keydown',onKey)
+  },[])
 
-    // Load the complete project register in the background.
-    client.projects({
-      page:1,
-      page_size:200,
-      sort:'risk'
-    }).then(pr=>{
-      setQueue(pr.items)
-      setProjects(pr.items)
-    }).catch(e=>{
-      console.error('Project register background load failed:',e)
-    })
-
-  }catch(e){
-    setLoading(false)
-    setSystemStatus('offline')
-    setError(
-      e instanceof Error
-        ? e.message
-        : 'Unable to connect to the Sentinel backend.'
-    )
-  }finally{
-    loadInFlight.current=false
-  }
-},[])
-  
   const openProject=useCallback(async(projectOrCode:Project|string)=>{
     const code=typeof projectOrCode==='string'?projectOrCode:projectOrCode.project_code
     const base=typeof projectOrCode==='string'?projects.find(p=>p.project_code===code)||null:projectOrCode
