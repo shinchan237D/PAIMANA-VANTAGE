@@ -1,0 +1,73 @@
+{
+  "active_report_period": "2026-04",
+  "history_start": "2025-07",
+  "history_end": "2026-04",
+  "canonical_periods": [
+    "2025-07",
+    "2025-08",
+    "2025-09",
+    "2025-10",
+    "2025-11",
+    "2025-12",
+    "2026-01",
+    "2026-02",
+    "2026-03",
+    "2026-04"
+  ],
+  "projects": 2491,
+  "current_snapshot_rows": 2132,
+  "total_snapshot_rows": 13749,
+  "open_april_integrity_flags": 948,
+  "source_files": [
+    {
+      "file": "FlashReport_April2026 (1).pdf",
+      "sha256": "90a6959e976da6928440efdea9c68847d1178356e4c0ebd078c51026ddb118d5",
+      "bytes": 3215216
+    },
+    {
+      "file": "FlashReport_August_2025.pdf",
+      "sha256": "7b28c68ca1fd697f2856fa4b5c79b5c26fa6e8f0be4d0897cc105958e01bf2c8",
+      "bytes": 5791675
+    },
+    {
+      "file": "FlashReport_December_2025.pdf",
+      "sha256": "07f56e5457c63192ae7b5b4036f975f7eb058a3364a25a87cdc6ce2369082401",
+      "bytes": 6398361
+    },
+    {
+      "file": "FlashReport_February_2026.pdf",
+      "sha256": "f29010c2d69ca185c8f36e6d8539d460b4ebe81753994dd21fbe63e057817df9",
+      "bytes": 6738453
+    },
+    {
+      "file": "FlashReport_January_2026.pdf",
+      "sha256": "9c043ad4a0acb01dd6f00fe2dbca60f812ffa981daa5143b24f7c5ec37f64c83",
+      "bytes": 6544662
+    },
+    {
+      "file": "FlashReport_July_2025.pdf",
+      "sha256": "1064c963c8afacf903ad9cc876fa3615c4b4b28ccdae920a8ff392af37111508",
+      "bytes": 5823487
+    },
+    {
+      "file": "FlashReport_March_2026.pdf",
+      "sha256": "e10411522bbc6caec5f3ef143c8399ad71221ac232e19410c1dfe87eb5c90253",
+      "bytes": 6827436
+    },
+    {
+      "file": "FlashReport_November_2025.pdf",
+      "sha256": "db9e2eff8a2ecc21285280fd85dfbb4df9ef99cbda74987ccd4a3edcbff28eb9",
+      "bytes": 5845019
+    },
+    {
+      "file": "FlashReport_October_2025.pdf",
+      "sha256": "4817bb54e983b63233e4538fb2e7adf80c6204a2a976021a71d126e9003edbc3",
+      "bytes": 5928547
+    },
+    {
+      "file": "FlashReport_September_2025.pdf",
+      "sha256": "520f100f2752c07c7d8e1180cce2258a6966d21b6e37fcbecca0b098835ef318",
+      "bytes": 6007329
+    }
+  ]
+}
